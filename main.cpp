@@ -13,16 +13,37 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    auto samples = createExample(50); // we will make 50 points from each class
+    if (argc <= 1) {
+        cout << "kkmeans n\nn -- clusters number\nExample: cat input | kkmeans 3";
+        return 0;
+    }
+    try {
+        auto cluster_num = stol(argv[1]);
+        double tolerance = 0.1;
+        size_t max_dict_size = 8;
+        if (argc > 2) {
+            tolerance = stod(argv[2]);
+            if (argc > 3) {
+                max_dict_size = stol(argv[3]);
+            }
+        }
 
-    Cluster cluster(0.1, 8);
+        //auto samples = createExample(50); // we will make 50 points from each class
+        auto samples = readSamples(cin);
 
-    auto cluster_class = cluster.search_clusters(3, samples);
+        Cluster cluster(tolerance, max_dict_size);
 
-    print_output(samples, cluster_class, cout);
-    ofstream f("output.out");
-    print_for_scalc(samples, cluster_class, f);
+        auto cluster_class = cluster.search_clusters(cluster_num, samples);
 
-    return 0;
+        print_output(samples, cluster_class, cout);
+        ofstream f("output.out");
+        print_for_scalc(samples, cluster_class, f);
+
+        return 0;
+
+    } catch (const exception& e) {
+        cerr << e.what() << endl;
+        return 1;
+    }
 }
 

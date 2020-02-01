@@ -54,3 +54,18 @@ std::vector<sample_type> createExample(long num) {
     }
     return samples;
 }
+
+std::vector<sample_type> readSamples(std::istream& in) {
+    // x1;y1\n
+    vector<sample_type> res;
+    for (string line; getline(in, line);) {
+        auto pos = line.find(';');
+        if (pos != string::npos && pos+1 != line.size()) {
+            sample_type m;
+            m(0) = stod(line.substr(0, pos));
+            m(1) = stod(line.substr(pos+1, line.size()));
+            res.push_back(m);
+        }
+    }
+    return res;
+}
