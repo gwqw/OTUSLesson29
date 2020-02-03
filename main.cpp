@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     if (argc <= 1) {
-        cout << "kkmeans n\nn -- clusters number\nExample: cat input | kkmeans 3";
+        cout << "kkmeans <n> [<tolerance> [<max_dict_size>]]\nn -- clusters number\nExample: cat input | kkmeans 3\n";
         return 0;
     }
     try {

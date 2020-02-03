@@ -29,11 +29,21 @@ std::vector<int> Cluster::search_clusters(int cluster_count, const std::vector<s
     std::vector<sample_type> initial_centers;
     pick_initial_centers(cluster_count, initial_centers, samples, test.get_kernel());
     test.train(samples, initial_centers);
+
     std::vector<int> res;
     res.reserve(samples.size());
     for (const auto& sample : samples) {
         res.push_back(test(sample));
     }
+    return res;
+}
+
+std::vector<int> Cluster::search_spectral_clusters(int cluster_count, const std::vector<sample_type> &samples) {
+    std::vector<int> res;
+    res.reserve(samples.size());
+
+    std::vector<unsigned long> assignments = spectral_cluster(kernel_type{}, samples, cluster_count);
+    res = {assignments.begin(), assignments.end()};
     return res;
 }
 
@@ -49,7 +59,7 @@ void cluster_data(const std::vector<sample_type>& samples) {
     // (and thus run slower and use more memory).  The third argument, however, is the
     // maximum number of dictionary vectors a kcentroid is allowed to use.  So you can use
     // it to control the runtime complexity.
-    kcentroid<kernel_type> kc(kernel_type(0.1),0.01, 8);
+    kcentroid<kernel_type> kc(kernel_type(),0.01, 8);
 
     // Now we make an instance of the kkmeans object and tell it to use kcentroid objects
     // that are configured with the parameters from the kc object we defined above.
@@ -88,6 +98,6 @@ void cluster_data(const std::vector<sample_type>& samples) {
     // Finally, we can also solve the same kind of non-linear clustering problem with
     // spectral_cluster().  The output is a vector that indicates which cluster each sample
     // belongs to.  Just like with kkmeans, it assigns each point to the correct cluster.
-    std::vector<unsigned long> assignments = spectral_cluster(kernel_type(0.1), samples, 3);
+    std::vector<unsigned long> assignments = spectral_cluster(kernel_type(), samples, 3);
     cout << mat(assignments) << endl;
 }
