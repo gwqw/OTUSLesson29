@@ -16,7 +16,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
-            - libboost-all-dev
+            #- libboost-all-dev
             - libopenblas-dev
             - libdlib-dev
       env:

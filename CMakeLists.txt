@@ -48,7 +48,7 @@ endif()
 
 # target properties
 set_target_properties(${EXE_NAME} ${TEST_NAME} PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS ${CMP_OPTIONS}
 )
