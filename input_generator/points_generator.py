@@ -3,7 +3,7 @@
     Points generator (input file) for kkmeans
 """
 
-import math
+import math, sys
 from random import random
 
 def generate_circle(x, y, r, num):
@@ -51,4 +51,12 @@ def sample_3():
 
 
 if __name__ == "__main__":
-    sample_3()
+    n = 3
+    if len(sys.argv) > 1:
+        n = int(sys.argv[1])
+    if n == 1:
+        sample_1()
+    elif n == 2:
+        sample_2()
+    else:
+        sample_3()
