@@ -32,6 +32,7 @@ void print_for_scalc(const std::vector<sample_type>& samples,
             << colors[cluster_class[i] % COLOR_NUM] << '\t'
             << 1 << '\n';
     }
+    // dummy point for better buble size
     out << 200 << '\t'
         << 200 << '\t'
         << -1 << '\t'

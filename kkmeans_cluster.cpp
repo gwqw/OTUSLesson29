@@ -1,5 +1,7 @@
 #include "kkmeans_cluster.h"
 
+#include <stdexcept>
+
 // The contents of this file are in the public domain. See LICENSE_FOR_EXAMPLE_PROGRAMS.txt
 /*
     This is an example illustrating the use of the kkmeans object
@@ -24,29 +26,25 @@
 
 using namespace std;
 
-std::vector<int> Cluster::search_clusters(int cluster_count, const std::vector<sample_type> &samples) {
-    test.set_number_of_centers(cluster_count);
-    std::vector<sample_type> initial_centers;
-    pick_initial_centers(cluster_count, initial_centers, samples, test.get_kernel());
-    test.train(samples, initial_centers);
-
-    std::vector<int> res;
-    res.reserve(samples.size());
-    for (const auto& sample : samples) {
-        res.push_back(test(sample));
+std::unique_ptr<ICluster> makeCluster(ClusterType ctype, double tolerance, std::size_t max_dict_size)
+{
+    switch (ctype) {
+        case ClusterType::RADIAL:
+            return make_unique<Cluster<dlib::radial_basis_kernel<sample_type>>>(tolerance, max_dict_size);
+        case ClusterType::POLYNOMIAL:
+            return make_unique<Cluster<dlib::polynomial_kernel<sample_type>>>(tolerance, max_dict_size);
+        case ClusterType::SIGMOID:
+            return make_unique<Cluster<dlib::sigmoid_kernel<sample_type>>>(tolerance, max_dict_size);
+        case ClusterType::LINEAR:
+            return make_unique<Cluster<dlib::linear_kernel<sample_type>>>(tolerance, max_dict_size);
+        case ClusterType::HISTOGRAM:
+            return make_unique<Cluster<dlib::histogram_intersection_kernel<sample_type>>>(tolerance, max_dict_size);
+        default:
+            throw invalid_argument("This cluster type is unrealized yet");
     }
-    return res;
 }
 
-std::vector<int> Cluster::search_spectral_clusters(int cluster_count, const std::vector<sample_type> &samples) {
-    std::vector<int> res;
-    res.reserve(samples.size());
-
-    std::vector<unsigned long> assignments = spectral_cluster(kernel_type{}, samples, cluster_count);
-    res = {assignments.begin(), assignments.end()};
-    return res;
-}
-
+/*
 using namespace dlib;
 
 void cluster_data(const std::vector<sample_type>& samples) {
@@ -101,3 +99,5 @@ void cluster_data(const std::vector<sample_type>& samples) {
     std::vector<unsigned long> assignments = spectral_cluster(kernel_type(), samples, 3);
     cout << mat(assignments) << endl;
 }
+
+ */

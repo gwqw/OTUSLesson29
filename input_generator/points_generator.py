@@ -43,7 +43,7 @@ def sample_3():
     c1 = generate_circle(0, 0, 1, 50)
     c2 = generate_circle(0, 0, 15, 50)
     c3 = generate_circle(25, 25, 5, 50)
-    sq = full_square(-100, -100, 100, 100, 50)
+    sq = full_square(-100, -100, 100, 100, 200)
     print_samples(c1)
     print_samples(c2)
     print_samples(c3)
