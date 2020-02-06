@@ -34,8 +34,9 @@ public:
 template <typename kernel_type>
 class Cluster : public ICluster {
 public:
-    explicit Cluster(double tolerance = 0.001, std::size_t max_dict_size = 8)
-    : kc(kernel_type{}, tolerance, max_dict_size),
+    template <typename ... Args>
+    explicit Cluster(double tolerance, std::size_t max_dict_size, Args&& ... args)
+    : kc(kernel_type{std::forward<Args>(args)...}, tolerance, max_dict_size),
       test(kc)
     {}
 
@@ -49,7 +50,8 @@ private:
     dlib::kkmeans<kernel_type> test;
 };
 
-std::unique_ptr<ICluster> makeCluster(ClusterType ctype, double tolerance, std::size_t max_dict_size);
+std::unique_ptr<ICluster> makeCluster(ClusterType ctype, double tolerance,
+                                      std::size_t max_dict_size, double gamma, double coef, double degree);
 
 template <typename kernel_type>
 std::vector<int> Cluster<kernel_type>::search_clusters(int cluster_count,

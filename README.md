@@ -59,10 +59,11 @@ cat kkmeans_ex.txt | kkmeans n
 **kkmeans** -- проводит кластеризацию точек, поступающих в стандартный ввод (x;y) и выводит в стандартный вывод точки с номером кластера: x;y;c
 
 ```sh
-kkmeans <n> [<kernel_type> [<tolerance> [<max_dict_size>]]]
+kkmeans <n> [<kernel_type> [<gamma> <coef> <degree> <tolerance> <max_dict_size>]]
 ```
 `n` -- число кластеров
 `kernel_type` -- тип ядра: 0 - radial (default), 1 - polynomial, 2 - sigmoid, 3 - linear, 4 - histogram
+`gamma coef degree` -- какие-то параметры ядра (default: 0.1 0 1)
 `tolerance` -- погрешность
 `max_dict_size` -- максимальный размер словаря
 **plot_results.py** -- отображает результаты кластеризации в виде диаграммы, разные кластеры -- разные цвета

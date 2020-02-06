@@ -26,19 +26,24 @@
 
 using namespace std;
 
-std::unique_ptr<ICluster> makeCluster(ClusterType ctype, double tolerance, std::size_t max_dict_size)
+std::unique_ptr<ICluster> makeCluster(ClusterType ctype, double tolerance,
+                                      std::size_t max_dict_size, double gamma, double coef, double degree)
 {
     switch (ctype) {
         case ClusterType::RADIAL:
-            return make_unique<Cluster<dlib::radial_basis_kernel<sample_type>>>(tolerance, max_dict_size);
+            return make_unique<Cluster<dlib::radial_basis_kernel<sample_type>>>(
+                    tolerance, max_dict_size, gamma);
         case ClusterType::POLYNOMIAL:
-            return make_unique<Cluster<dlib::polynomial_kernel<sample_type>>>(tolerance, max_dict_size);
+            return make_unique<Cluster<dlib::polynomial_kernel<sample_type>>>(
+                    tolerance, max_dict_size, gamma, coef, degree);
         case ClusterType::SIGMOID:
-            return make_unique<Cluster<dlib::sigmoid_kernel<sample_type>>>(tolerance, max_dict_size);
+            return make_unique<Cluster<dlib::sigmoid_kernel<sample_type>>>(
+                    tolerance, max_dict_size, gamma, coef);
         case ClusterType::LINEAR:
             return make_unique<Cluster<dlib::linear_kernel<sample_type>>>(tolerance, max_dict_size);
         case ClusterType::HISTOGRAM:
-            return make_unique<Cluster<dlib::histogram_intersection_kernel<sample_type>>>(tolerance, max_dict_size);
+            return make_unique<Cluster<dlib::histogram_intersection_kernel<sample_type>>>(
+                    tolerance, max_dict_size);
         default:
             throw invalid_argument("This cluster type is unrealized yet");
     }

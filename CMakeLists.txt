@@ -19,6 +19,7 @@ set(SOURCE
         kkmeans_cluster.cpp kkmeans_cluster.h
         samples_sample.cpp samples_sample.h
         print_clusters.cpp print_clusters.h
+        parsecommandline.cpp parsecommandline.h
 )
 set(EXE_SOURCE main.cpp ${SOURCE})
 if (USE_TEST)
